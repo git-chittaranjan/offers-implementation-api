@@ -363,6 +363,15 @@ UPDATE Offers
 SET Offer_View_Threshold = NULL,
     Offer_Click_Threshold = NULL
 WHERE Offer_Type = 'Default';
+
+
+SELECT ISJSON(Offer_Content) 
+FROM Offers 
+WHERE Offer_ID = 2;
+
+
+UPDATE Offers SET Offer_Content = N'{ "redirection_URL": "https://www.chittaranjansaha.com", "image_URL": { "mobile": "https://raw.githubusercontent.com/git-chittaranjan/offers-implementation-api/main/Frontend/Contents/Desktop/Personal_Loan_Asset_Offer.gif", "desktop": "https://raw.githubusercontent.com/git-chittaranjan/offers-implementation-api/main/Frontend/Contents/Desktop/Personal_Loan_Asset_Offer.gif", "tablet": "https://raw.githubusercontent.com/git-chittaranjan/offers-implementation-api/main/Frontend/Contents/Desktop/Personal_Loan_Asset_Offer.gif" }, "offer_text": "Personal Loan Asset Offer" }' WHERE Offer_ID = 2;
+
  --------------------------------------------- Customers Table ---------------------------------------------
 
  CREATE TABLE Customers

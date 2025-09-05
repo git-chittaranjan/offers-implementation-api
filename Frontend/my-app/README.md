@@ -7,7 +7,8 @@ https://www.canva.com/design/DAGyGiHsWo0/gtVxtiqusmDKMc4HKGtI5g/edit?ui=e30
 # Mobile
 https://www.canva.com/design/DAGyHFkepwI/kI1JBh6xGXGF_9f1wHXzrg/edit?ui=e30
 
-
+# GitHub URLS
+https://raw.githubusercontent.com/git-chittaranjan/offers-implementation-api/main/Frontend/Contents/Desktop/Credit_Card_Upgrade_Offer.gif
 
 ## References
 https://github.com/adobe/adobe-client-data-layer/wiki
