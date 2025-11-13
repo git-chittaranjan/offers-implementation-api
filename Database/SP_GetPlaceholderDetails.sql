@@ -1,6 +1,6 @@
 
 
-CREATE PROCEDURE GetPlaceholderDetails
+CREATE OR ALTER PROCEDURE GetPlaceholderDetails
     @Placeholder_Guid UNIQUEIDENTIFIER,
     @StatusCode INT OUTPUT   -- 0 = Success, 1 = Not Found, -1 = Error
 AS

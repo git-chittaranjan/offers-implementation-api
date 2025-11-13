@@ -1,6 +1,6 @@
 
 
-CREATE PROCEDURE GetOfferDetails
+CREATE OR ALTER PROCEDURE GetOfferDetails
     @Offer_Guid UNIQUEIDENTIFIER,
     @StatusCode INT OUTPUT   -- 0 = Success, 1 = Offer Not Found, -1 = Error
 AS

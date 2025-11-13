@@ -134,9 +134,8 @@ SELECT * FROM Offers;
 
 -- Update default offers threshold
 UPDATE Offers
-SET Offer_View_Threshold = NULL,
-    Offer_Click_Threshold = NULL
-WHERE Offer_Type = 'Default';
+SET Offer_Visibility_Flag = 0
+WHERE Offer_ID = 19
 
 -- Validate JSON field
 SELECT ISJSON(Offer_Content)
@@ -184,6 +183,9 @@ SELECT * FROM Customers ORDER BY Cust_ID;
 
 -- DROP TABLE Customers;
 
+UPDATE Customers 
+	SET Cust_Is_Active = 0
+WHERE Cust_Fed_ID = '8391046275'
 
 
 -- ============================================= 4. CustomerOffers Table =============================================
@@ -192,6 +194,7 @@ CREATE TABLE CustomerOffers
 (
     Cust_Fed_ID VARCHAR(100) NOT NULL,
     Offer_ID INT NOT NULL,
+    Offer_Guid UNIQUEIDENTIFIER NOT NULL,
     Assigned_Date DATETIME DEFAULT GETDATE(),
     PRIMARY KEY (Cust_Fed_ID, Offer_ID),
     FOREIGN KEY (Cust_Fed_ID) REFERENCES Customers(Cust_Fed_ID),
@@ -230,7 +233,7 @@ SELECT
 FROM CustomerOffers co
 INNER JOIN Offers o ON co.Offer_ID = o.Offer_ID
 INNER JOIN Customers c ON co.Cust_Fed_ID = c.Cust_Fed_ID
-WHERE c.Cust_Fed_ID = '6049382751';
+WHERE c.Cust_Fed_ID = '9283746150';
 
 -- DROP TABLE CustomerOffers;
 
@@ -259,7 +262,8 @@ INSERT INTO PlaceholderOffers (Placeholder_ID, Offer_ID) VALUES
 SELECT * FROM PlaceholderOffers;
 
 SELECT 
-    p.Placeholder_ID, 
+    p.Placeholder_ID,
+    p.Placeholder_Guid,
     p.Placeholder_Name, 
     p.Channel_Name, 
     o.Offer_ID, 
@@ -267,7 +271,7 @@ SELECT
 FROM PlaceholderOffers po
 INNER JOIN Placeholders p ON po.Placeholder_ID = p.Placeholder_ID
 INNER JOIN Offers o ON po.Offer_ID = o.Offer_ID
-WHERE p.Placeholder_ID = 2;
+WHERE p.Placeholder_ID = 5;
 
 -- DROP TABLE PlaceholderOffers;
 
@@ -279,20 +283,20 @@ CREATE TABLE Bits
 (
     Bit_ID INT PRIMARY KEY IDENTITY,
     Bit_Guid UNIQUEIDENTIFIER NOT NULL UNIQUE DEFAULT NEWSEQUENTIALID(),
-    Fed_ID VARCHAR(100),
+    Cust_Fed_ID VARCHAR(100),
     Offer_Guid UNIQUEIDENTIFIER,
     Offer_Name VARCHAR(100),
-    Bit_Type VARCHAR(100) NOT NULL,
+    Bit_Type VARCHAR(100) NOT NULL CHECK (Bit_Type IN ('VIEW','CLICK')),
     Channel_Name VARCHAR(100),
     Placeholder_Guild UNIQUEIDENTIFIER,
     Placeholder_Name VARCHAR(100),
-    Date_Time DATETIME DEFAULT GETDATE()
+    Action_Timestamp DATETIME2 DEFAULT SYSDATETIME()
 );
 
 
-INSERT INTO Bits (Fed_ID, Offer_Guid, Offer_Name, Bit_Type, Channel_Name, Placeholder_Guild, Placeholder_Name)
+INSERT INTO Bits (Cust_Fed_ID, Offer_Guid, Offer_Name, Bit_Type, Channel_Name, Placeholder_Guild, Placeholder_Name)
 VALUES
-('4839201746', 'CBDA7CC0-5387-F011-9F57-64D69AE7FAE4', 'Pre-Approved Home Loan Offer', 'CLICK', 'NLI', '52C5AA3B-AB8B-F011-9F57-64D69AE7FAE4', 'Home Page Banner'),
+--('4839201746', 'CBDA7CC0-5387-F011-9F57-64D69AE7FAE4', 'Pre-Approved Home Loan Offer', 'CLICK', 'NLI', '52C5AA3B-AB8B-F011-9F57-64D69AE7FAE4', 'Home Page Banner'),
 ('4839201746', 'CBDA7CC0-5387-F011-9F57-64D69AE7FAE4', 'Pre-Approved Home Loan Offer', 'CLICK', 'RIB', '54C5AA3B-AB8B-F011-9F57-64D69AE7FAE4', 'What''s New'),
 ('4839201746', 'CBDA7CC0-5387-F011-9F57-64D69AE7FAE4', 'Pre-Approved Home Loan Offer', 'VIEW', 'iMobile', '53C5AA3B-AB8B-F011-9F57-64D69AE7FAE4', 'Hero Banner'),
 ('4839201746', 'CBDA7CC0-5387-F011-9F57-64D69AE7FAE4', 'Pre-Approved Home Loan Offer', 'CLICK', 'RIB', '54C5AA3B-AB8B-F011-9F57-64D69AE7FAE4', 'What''s New'),
@@ -303,13 +307,31 @@ VALUES
 ('6049382751', 'F8E26247-5587-F011-9F57-64D69AE7FAE4', 'Gold Loan Offer', 'CLICK', 'NLI', '52C5AA3B-AB8B-F011-9F57-64D69AE7FAE4', 'Home Page Banner'),
 ('6049382751', 'F8E26247-5587-F011-9F57-64D69AE7FAE4', 'Gold Loan Offer', 'VIEW', 'NLI', '52C5AA3B-AB8B-F011-9F57-64D69AE7FAE4', 'Home Page Banner');
 
+INSERT INTO Bits (Cust_Fed_ID, Offer_Guid, Offer_Name, Bit_Type, Channel_Name, Placeholder_Guild, Placeholder_Name)
+VALUES
+('6049382751', 'F6E26247-5587-F011-9F57-64D69AE7FAE4', 'Forex Offer', 'VIEW', 'InstaBIZ', '56C5AA3B-AB8B-F011-9F57-64D69AE7FAE4', 'Marchent Dashboard')
+
 SELECT * FROM Bits
 
 -- DROP TABLE Bits
 
 
 
+-- ============================================= 7. Customer Offer Daily Status Table =============================================
 
+CREATE TABLE CustomerOfferStatsDaily (
+    Stat_Date DATE NOT NULL,
+    Cust_Fed_ID VARCHAR(100) NOT NULL,
+    Offer_Guid UNIQUEIDENTIFIER NOT NULL,
+    View_Count INT DEFAULT 0,
+    Click_Count INT DEFAULT 0,
+    CONSTRAINT PK_CustomerOfferStatsDaily 
+        PRIMARY KEY (Stat_Date, Cust_Fed_ID, Offer_Guid)
+);
+
+--DROP TABLE CustomerOfferStatsDaily
+
+SELECT * FROM CustomerOfferStatsDaily
 
 
 

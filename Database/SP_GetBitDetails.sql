@@ -1,6 +1,6 @@
 
 
-CREATE PROCEDURE GetBitDetails
+CREATE OR ALTER PROCEDURE GetBitDetails
     @Bit_Guid UNIQUEIDENTIFIER,
     @StatusCode INT OUTPUT   -- 0 = Success, 1 = Not Found, -1 = Error
 AS
@@ -23,7 +23,7 @@ BEGIN
                 Offer_Name,
                 Bit_Type,
                 Channel_Name,
-                Placeholder_Guild,
+                Placeholder_Guid,
                 Placeholder_Name,
                 Date_Time,
                 'Success' AS Message
@@ -72,7 +72,7 @@ END;
 DECLARE @Status INT;
 
 EXEC GetBitDetails 
-    @Bit_Guid = '3C3C35C4-E68B-F011-9F57-64D69AE7FAE4',
+    @Bit_Guid = '442994FF-EA8B-F011-9F57-64D69AE7FAE4',
     @StatusCode = @Status OUTPUT;
 
 SELECT @Status AS StatusCode;
