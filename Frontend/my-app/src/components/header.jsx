@@ -14,7 +14,7 @@ const Header = () => {
             <div className="flex items-center space-x-6 lg:space-x-8">
                 {/* Profile Photo */}
                 <img
-                    src="/assets/photo.jpg"
+                    src="/assets/profile_photo.jpg"
                     alt="Profile"
                     className="w-10 h-10 rounded-full object-cover border-2 border-yellow-300"
                 />
